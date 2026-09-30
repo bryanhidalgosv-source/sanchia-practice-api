@@ -8,6 +8,10 @@ export class MaterialsController {
         const materials = await service.findAll();
         return res.status(200).json({ success: true, data: materials });
     }
+    async findLowStock(_req: Request, res: Response) {
+        const materials = await service.findLowStock();
+        return res.status(200).json({ success: true, data: materials });
+    }
 
     async findById(req: Request, res: Response) {
         const material = await service.findById(req.params.id);
