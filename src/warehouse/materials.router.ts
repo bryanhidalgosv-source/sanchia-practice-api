@@ -9,7 +9,9 @@ const router = Router();
 const controller = new MaterialsController();
 
 router.get('/', authenticate, controller.findAll.bind(controller));
+router.get('/low-stock', authenticate, controller.findLowStock.bind(controller));
 router.get('/:id', authenticate, controller.findById.bind(controller));
+
 router.post('/', authenticate, requireRole('ADMIN', 'WAREHOUSE'), validate(createMaterialSchema), controller.create.bind(controller));
 router.patch('/:id', authenticate, requireRole('ADMIN', 'WAREHOUSE'), validate(updateMaterialSchema), controller.update.bind(controller));
 router.delete('/:id', authenticate, requireRole('ADMIN'), controller.remove.bind(controller));

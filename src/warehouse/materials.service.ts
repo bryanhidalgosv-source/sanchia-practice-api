@@ -12,6 +12,17 @@ export class MaterialsService {
         });
     }
 
+    async findLowStock() {
+        const materials = await this.findAll();
+
+        return materials
+            .map((material) => ({
+                ...material,
+                totalStock: material.warehouses.reduce((sum, item) => sum + item.quantity, 0),
+            }))
+            .filter((material) => material.totalStock < material.minStock);
+    }
+
     async findById(id: string) {
         const material = await prisma.material.findUnique({
             where: { id },
