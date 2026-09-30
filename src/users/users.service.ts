@@ -1,9 +1,8 @@
 import bcrypt from 'bcrypt';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@config/prisma';
 import { env } from '@config/env';
 import { notFound, conflict } from '@common/http-error';
 
-const prisma = new PrismaClient();
 
 export class UsersService {
     async findAll(page = 1, limit = 10) {
