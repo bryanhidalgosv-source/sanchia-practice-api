@@ -1,0 +1,60 @@
+{
+    "name": "sanchia-practice-api",
+    "version": "1.0.0",
+    "description": "Mini-ERP de práctica con la misma arquitectura de Sanchia API",
+    "main": "server.ts",
+    "scripts": {
+        "dev": "nodemon -e ts,js --exec ts-node -r tsconfig-paths/register ./src/server.ts",
+        "build": "prisma generate && tsc && resolve-tspaths",
+        "start": "node dist/server.js",
+        "lint": "eslint --fix --ext .js,.ts .",
+        "format": "prettier --write \"**/*.+(js|ts|json)\"",
+        "prisma:generate": "npx prisma generate",
+        "prisma:migrate": "npx prisma migrate dev --name init",
+        "prisma:deploy": "npx prisma migrate deploy",
+        "db:seed": "ts-node prisma/seed.ts",
+        "db:studio": "npx prisma studio",
+        "postinstall": "prisma generate"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "engines": {
+        "node": "22.x",
+        "npm": ">=8.0.0"
+    },
+    "devDependencies": {
+        "@types/bcrypt": "^5.0.0",
+        "@types/cors": "^2.8.13",
+        "@types/express": "^4.17.17",
+        "@types/jsonwebtoken": "^9.0.2",
+        "@types/morgan": "^1.9.9",
+        "@types/node": "^20.11.0",
+        "@types/uuid": "^9.0.4",
+        "eslint": "^8.44.0",
+        "nodemon": "^2.0.22",
+        "prettier": "2.8.8",
+        "prisma": "^5.12.1",
+        "ts-node": "^10.9.1",
+        "tsconfig-paths": "^4.2.0",
+        "typescript": "^5.1.6"
+    },
+    "dependencies": {
+        "@prisma/client": "^5.12.1",
+        "bcrypt": "^5.1.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.6.1",
+        "express": "^4.18.2",
+        "express-async-errors": "^3.1.1",
+        "joi": "^17.9.2",
+        "jsonwebtoken": "^9.0.1",
+        "morgan": "^1.10.0",
+        "uuid": "^9.0.1"
+    },
+    "allowScripts": {
+        "@prisma/client@5.22.0": true,
+        "@prisma/engines@5.22.0": true,
+        "bcrypt@5.1.1": true,
+        "prisma@5.22.0": true
+    }
+}

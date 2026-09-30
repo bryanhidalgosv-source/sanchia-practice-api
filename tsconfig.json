@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "commonjs",
+        "lib": ["ES2020"],
+        "outDir": "./dist",
+        "rootDir": "./",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "baseUrl": "./",
+        "paths": {
+            "@auth/*": ["src/auth/*"],
+            "@users/*": ["src/users/*"],
+            "@warehouse/*": ["src/warehouse/*"],
+            "@production/*": ["src/production/*"],
+            "@common/*": ["src/common/*"],
+            "@middlewares/*": ["src/middlewares/*"],
+            "@config/*": ["src/config/*"],
+            "@utils/*": ["src/utils/*"]
+        }
+    },
+    "include": ["src/**/*", "prisma/**/*"],
+    "exclude": ["node_modules", "dist"]
+}
