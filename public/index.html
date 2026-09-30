@@ -309,7 +309,9 @@
     </div>
 
     <script>
-        const API_URL = 'http://localhost:3000/api';
+        const API_URL = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+            ? 'http://localhost:3000/api'
+            : 'https://sanchia-practice-api.onrender.com/api';
         let token = null;
 
         // LOGIN
