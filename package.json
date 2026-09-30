@@ -5,7 +5,7 @@
     "main": "server.ts",
     "scripts": {
         "dev": "nodemon -e ts,js --exec ts-node -r tsconfig-paths/register ./src/server.ts",
-        "build": "prisma generate && tsc && resolve-tspaths",
+        "build": "npx prisma generate && tsc && resolve-tspaths",
         "start": "node dist/server.js",
         "lint": "eslint --fix --ext .js,.ts .",
         "format": "prettier --write \"**/*.+(js|ts|json)\"",
@@ -13,8 +13,7 @@
         "prisma:migrate": "npx prisma migrate dev --name init",
         "prisma:deploy": "npx prisma migrate deploy",
         "db:seed": "ts-node prisma/seed.ts",
-        "db:studio": "npx prisma studio",
-        "postinstall": "prisma generate"
+        "db:studio": "npx prisma studio"
     },
     "keywords": [],
     "author": "",
