@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "nodemon -e ts,js --exec ts-node -r tsconfig-paths/register ./src/server.ts",
         "build": "node node_modules/prisma/build/index.js generate && tsc && resolve-tspaths",
-        "start": "node node_modules/prisma/build/index.js migrate deploy && node dist/src/server.js",
+        "start": "node node_modules/prisma/build/index.js migrate deploy && (node dist/prisma/seed.js || true) && node dist/src/server.js",
         "lint": "eslint --fix --ext .js,.ts .",
         "format": "prettier --write \"**/*.+(js|ts|json)\"",
         "prisma:generate": "npx prisma generate",

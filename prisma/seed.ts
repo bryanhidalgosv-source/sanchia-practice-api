@@ -4,6 +4,10 @@ import bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 async function main() {
+    if ((await prisma.user.count()) > 0) {
+        console.log('🌱 La base ya tiene datos, se omite el seed.');
+        return;
+    }
     console.log('🌱 Iniciando seed de base de datos...');
 
     // ============================================
