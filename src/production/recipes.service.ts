@@ -1,7 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@config/prisma';
 import { notFound } from '@common/http-error';
 
-const prisma = new PrismaClient();
 
 export class RecipesService {
     async findAll() {

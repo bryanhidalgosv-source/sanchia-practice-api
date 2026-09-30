@@ -1,7 +1,15 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@config/prisma';
 import { notFound, badRequest } from '@common/http-error';
 
-const prisma = new PrismaClient();
+
+// Estado actual -> estados a los que se puede pasar. COMPLETED y CANCELLED son finales.
+const ALLOWED_TRANSITIONS: Record<string, string[]> = {
+    DRAFT: ['IN_PROGRESS', 'CANCELLED'],
+    IN_PROGRESS: ['COMPLETED', 'ON_HOLD', 'CANCELLED'],
+    ON_HOLD: ['IN_PROGRESS', 'CANCELLED'],
+    COMPLETED: [],
+    CANCELLED: [],
+};
 
 export class ProductionService {
     async createPlan(data: { productId: string; quantity: number; startDate?: Date | string; endDate?: Date | string; notes?: string }) {
@@ -39,7 +47,12 @@ export class ProductionService {
     }
 
     async updatePlanStatus(id: string, status: string) {
-        await this.findPlanById(id);
+        const plan = await this.findPlanById(id);
+
+        if (!(ALLOWED_TRANSITIONS[plan.status] ?? []).includes(status)) {
+            throw badRequest(`No se puede pasar un plan de ${plan.status} a ${status}`);
+        }
+
         return prisma.productionPlan.update({ where: { id }, data: { status } });
     }
 

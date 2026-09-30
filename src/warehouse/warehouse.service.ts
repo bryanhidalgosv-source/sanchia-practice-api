@@ -1,7 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@config/prisma';
 import { notFound, badRequest } from '@common/http-error';
 
-const prisma = new PrismaClient();
 
 export class WarehouseService {
     async findAll() {
@@ -46,33 +45,27 @@ export class WarehouseService {
         const warehouse = await prisma.warehouse.findUnique({ where: { id: data.warehouseId } });
         if (!warehouse) throw notFound('Almacén no encontrado');
 
-        if (data.type === 'EXIT') {
-            const stock = await prisma.warehouseMaterial.findUnique({
-                where: { warehouseId_materialId: { warehouseId: data.warehouseId, materialId: data.materialId } },
-            });
-            if (!stock || stock.quantity < data.quantity) {
-                throw badRequest('Stock insuficiente para esta salida');
+        const { warehouseId, materialId, quantity } = data;
+
+        return prisma.$transaction(async (tx) => {
+            if (data.type === 'ENTRY') {
+                await tx.warehouseMaterial.upsert({
+                    where: { warehouseId_materialId: { warehouseId, materialId } },
+                    update: { quantity: { increment: quantity } },
+                    create: { warehouseId, materialId, quantity },
+                });
+            } else {
+                // Un solo UPDATE condicionado: revisa y descuenta a la vez, así dos salidas
+                // simultáneas no pueden dejar el stock en negativo.
+                const { count } = await tx.warehouseMaterial.updateMany({
+                    where: { warehouseId, materialId, quantity: { gte: quantity } },
+                    data: { quantity: { decrement: quantity } },
+                });
+                if (count === 0) throw badRequest('Stock insuficiente para esta salida');
             }
-        }
 
-        const [movement] = await prisma.$transaction([
-            prisma.stockMovement.create({ data }),
-            prisma.warehouseMaterial.upsert({
-                where: { warehouseId_materialId: { warehouseId: data.warehouseId, materialId: data.materialId } },
-                update: {
-                    quantity: data.type === 'ENTRY'
-                        ? { increment: data.quantity }
-                        : { decrement: data.quantity },
-                },
-                create: {
-                    warehouseId: data.warehouseId,
-                    materialId: data.materialId,
-                    quantity: data.type === 'ENTRY' ? data.quantity : -data.quantity,
-                },
-            }),
-        ]);
-
-        return movement;
+            return tx.stockMovement.create({ data });
+        });
     }
 
     async getMovements(materialId?: string) {
