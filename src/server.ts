@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 // Servir archivos estáticos (la página web)
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(process.cwd(), 'public')));
 
 // Rutas
 app.use('/api/auth', authRouter);

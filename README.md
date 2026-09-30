@@ -14,7 +14,7 @@ Prepararte para tu primer día de trabajo (Jueves 1 de Octubre de 2026) practica
 | TypeScript 5.1 | Lenguaje |
 | Express 4 | Framework HTTP |
 | Prisma | ORM |
-| SQLite | Base de datos (fácil, sin instalación) |
+| PostgreSQL | Base de datos |
 | JWT | Autenticación |
 | Joi | Validación |
 
